@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 const columnFilter = ['population', 'orbital_period',
@@ -6,17 +6,29 @@ const columnFilter = ['population', 'orbital_period',
 
 export default function Filters() {
   const [itemsColumn, setItemsColumn] = useState(columnFilter);
-  const [column, setColumn] = useState('population');
+  const [column, setColumn] = useState(itemsColumn[0]);
   const [comparison, setComparison] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
   const { filterByNumericValues, setFilterByNumericValues } = useContext(PlanetContext);
+
+  const removeFilters = (coluna) => {
+    setFilterByNumericValues(filterByNumericValues
+      .filter((filter) => filter.column !== coluna));
+    setItemsColumn([...itemsColumn, coluna]);
+  };
 
   const handleFilter = () => {
     setFilterByNumericValues([...filterByNumericValues,
       { column, comparison, valueFilter }]);
     setItemsColumn(itemsColumn.filter((item) => item !== column));
-    setColumn(itemsColumn[0]);
   };
+
+  useEffect(() => {
+    const changeColumn = () => {
+      setColumn(itemsColumn[0]);
+    };
+    changeColumn();
+  }, [itemsColumn]);
 
   return (
     <div>
@@ -66,6 +78,33 @@ export default function Filters() {
         Filtrar
 
       </button>
+      <div>
+        {
+          filterByNumericValues.length > 0
+        && filterByNumericValues.map((filter) => (
+          <div key={ filter.column } data-testid="filter">
+            <span>{filter.column}</span>
+            <span>{filter.comparison}</span>
+            <span>{filter.valueFilter}</span>
+            <button
+              type="button"
+              onClick={ () => removeFilters(filter.column) }
+            >
+              X
+
+            </button>
+          </div>
+        ))
+        }
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ () => setFilterByNumericValues([]) }
+        >
+          Remover Todos os filtro
+
+        </button>
+      </div>
     </div>
 
   );
