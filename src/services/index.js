@@ -5,9 +5,6 @@ async function getPlanets() {
   const { results } = await response.json();
   const planets = results.reduce((acc, current) => {
     delete current.residents;
-    // current.orbitalPeriod = current.orbital_period;
-    // current.rotationPeriod = current.rotation_period;
-    // current.surfaceWater = current.surface_water;
     acc.push(current);
     return acc;
   }, []);
