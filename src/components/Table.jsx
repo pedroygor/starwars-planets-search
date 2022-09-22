@@ -2,7 +2,31 @@ import React, { useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function Table() {
-  const { planetsFiltered } = useContext(PlanetContext);
+  const {
+    planets,
+    filterByName: { name },
+    filterByNumericValues,
+  } = useContext(PlanetContext);
+
+  let filteredByName = name.length > 0 ? planets
+    .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
+    : planets;
+
+  if (filterByNumericValues.length > 0) {
+    filterByNumericValues.forEach((planet) => {
+      if (planet.comparison === 'maior que') {
+        filteredByName = filteredByName
+          .filter((item) => Number(item[planet.column]) > Number(planet.valueFilter));
+      } else if (planet.comparison === 'menor que') {
+        filteredByName = filteredByName
+          .filter((item) => Number(item[planet.column]) < Number(planet.valueFilter));
+      } else {
+        filteredByName = filteredByName
+          .filter((item) => Number(item[planet.column]) === Number(planet.valueFilter));
+      }
+    });
+  }
+
   return (
     <table>
       <thead>
@@ -23,7 +47,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {planetsFiltered.map((planet) => (
+        { filteredByName.map((planet) => (
           <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>

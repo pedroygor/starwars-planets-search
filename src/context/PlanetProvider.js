@@ -5,34 +5,27 @@ import PlanetContext from './PlanetContext';
 
 export default function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
-  const [planetsFiltered, setPlanetsFiltered] = useState([]);
   const [filterText, setFilterText] = useState('');
-
-  const context = {
-    planetsFiltered,
-    setPlanetsFiltered,
-    filterByName: {
-      name: filterText,
-      setFilterText,
-    },
-  };
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
       const newPlanets = await getPlanets();
       setPlanets(newPlanets);
-      setPlanetsFiltered(newPlanets);
     };
     fetchPlanets();
   }, []);
 
-  useEffect(() => {
-    function updatePlanets() {
-      setPlanetsFiltered(planets
-        .filter(({ name }) => name.toLowerCase().includes(filterText.toLowerCase())));
-    }
-    updatePlanets();
-  }, [filterText, planets]);
+  const context = {
+    planets,
+    setPlanets,
+    filterByName: {
+      name: filterText,
+      setFilterText,
+    },
+    filterByNumericValues,
+    setFilterByNumericValues,
+  };
 
   return (
     <PlanetContext.Provider value={ context }>
