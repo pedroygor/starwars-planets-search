@@ -88,6 +88,7 @@ export default function Filters() {
             <span>{filter.valueFilter}</span>
             <button
               type="button"
+              data-testid="remove-filtered"
               onClick={ () => removeFilters(filter.column) }
             >
               X
