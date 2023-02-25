@@ -7,7 +7,7 @@ function Table() {
     filterByName: { name },
     filterByNumericValues,
   } = useContext(PlanetContext);
-
+  console.log('oi');
   let filteredByName = name.length > 0 ? planets
     .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
     : planets;

@@ -12,6 +12,7 @@ describe(`Testando o projeto StarWars`, () => {
   });
 
   it(`Testando componente <InputFilter />`, () => {
+
     render(<App />)
     const input = screen.getByTestId('name-filter')
     expect(input).toBeInTheDocument()
@@ -34,7 +35,6 @@ describe(`Testando o projeto StarWars`, () => {
   })
 
   it(`Testando se existem os filtros na tela`, async () => {
-    // const onChange = jest.fn()
     render(<App />)
     await waitFor(() => {
       expect(screen.getAllByRole('row')).toHaveLength(11);
@@ -51,12 +51,6 @@ describe(`Testando o projeto StarWars`, () => {
 
     userEvent.selectOptions(screen.getByTestId('comparison-filter'), 'menor que')
     expect(screen.getByTestId('comparison-filter')).toHaveValue('menor que')
-    
-    // userEvent.selectOptions(screen.getByTestId('comparison-filter'), 'maior que')
-    // expect(screen.getByTestId('comparison-filter')).toHaveValue('maior que')
-
-    // userEvent.selectOptions(screen.getByTestId('comparison-filter'), 'igual a')
-    // expect(screen.getByTestId('comparison-filter')).toHaveValue('igual a')
 
     userEvent.type(screen.getByTestId('value-filter'), '10')
     expect(screen.getByTestId('value-filter')).toHaveValue(10)
@@ -64,14 +58,11 @@ describe(`Testando o projeto StarWars`, () => {
     userEvent.click(screen.getByTestId('button-filter'))
 
     expect(screen.getByText('orbital_period')).toBeInTheDocument()
-    // expect( await screen.findByText('menor que')).toBeInTheDocument()
-    // expect( await screen.findByText('10')).toBeInTheDocument()
     expect(screen.getByTestId('filter')).toBeInTheDocument()
     expect(screen.getByText('X')).toBeInTheDocument()
     expect(screen.getByTestId('button-remove-filters')).toBeInTheDocument()
 
     userEvent.click(screen.getByTestId('button-remove-filters'))
-    // expect(await screen.findByText('X')).not.toBeInTheDocument()
 
     userEvent.selectOptions(screen.getByTestId('column-filter'), 'population')
     expect(screen.getByTestId('column-filter')).toHaveValue('population')
@@ -120,8 +111,7 @@ describe(`Testando o projeto StarWars`, () => {
     userEvent.selectOptions(screen.getByTestId('comparison-filter'), 'maior que')
     expect(screen.getByTestId('comparison-filter')).toHaveValue('maior que')
 
-   
-
+  
     expect( await screen.findAllByRole('row')).toHaveLength(2)
   })
   
